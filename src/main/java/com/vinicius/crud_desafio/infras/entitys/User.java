@@ -3,6 +3,8 @@ package com.vinicius.crud_desafio.infras.entitys;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "tb_user")
 @JsonPropertyOrder({ "id", "name", "email"})
@@ -21,7 +23,8 @@ public class User {
     @Column(length = 40, nullable = false)
     private String password;
 
-//    private List<CartaoVem> cartoes;
+    @OneToMany(mappedBy = "usuario")
+    private List<Cartao> cartoes;
 
     public User(String name, String email, String password) {
         this.name = name;
