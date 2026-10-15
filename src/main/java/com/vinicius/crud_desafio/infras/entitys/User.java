@@ -1,9 +1,11 @@
 package com.vinicius.crud_desafio.infras.entitys;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "tb_user")
+@JsonPropertyOrder({ "id", "name", "email"})
 public class User {
 
     @Id
@@ -19,15 +21,20 @@ public class User {
     @Column(length = 40, nullable = false)
     private String password;
 
-//    private CartaoVem cartaoVem;
+//    private List<CartaoVem> cartoes;
 
-    public User(String name, String email, String password){
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
     }
 
-    public User(){}
+    public User() {
+    }
+
+    public Long getId() {
+        return this.id;
+    }
 
     public String getName() {
         return name;
