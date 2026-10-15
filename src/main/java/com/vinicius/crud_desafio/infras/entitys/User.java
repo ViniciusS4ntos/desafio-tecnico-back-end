@@ -44,6 +44,10 @@ public class User {
         return email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     // Setters
     public void setName(String name) {
         this.name = name;
