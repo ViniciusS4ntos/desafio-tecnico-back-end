@@ -1,6 +1,6 @@
-package com.vinicius.crud_desafio.controller.dtos.in;
+package com.vinicius.crud_desafio.controller.dtos;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 
 // entrada
 public class UserDTO {

@@ -16,15 +16,15 @@ public class CartaoService {
     private UserRepository userRepository;
 
 
-    public CartaoService(CartaoRepository cartaoRepository, UserRepository userRepository){
+    public CartaoService(CartaoRepository cartaoRepository, UserRepository userRepository) {
         this.cartaoRepository = cartaoRepository;
         this.userRepository = userRepository;
     }
 
-    public Cartao criarCartao(Long id, TipoCartao tipoCartao){
+    public Cartao criarCartao(Long id, TipoCartao tipoCartao) {
 
         User user = userRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Usuario nao encontrado! id " + id )
+                () -> new RuntimeException("Usuario nao encontrado! id " + id)
         );
 
         for (Cartao cartao : user.getCartoes()) {
@@ -42,10 +42,10 @@ public class CartaoService {
         return cartaoRepository.save(cartao);
     }
 
-    public List<Cartao> visualizarCartoes(Long id){
+    public List<Cartao> visualizarCartoes(Long id) {
 
         User user = userRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Usuario nao encontrado! id " + id )
+                () -> new RuntimeException("Usuario nao encontrado! id " + id)
         );
 
         return user.getCartoes();

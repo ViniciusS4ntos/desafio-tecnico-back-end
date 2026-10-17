@@ -27,13 +27,13 @@ public class Cartao {
     @JoinColumn(name = "user_id")
     private User usuario;
 
-    public Cartao(TipoCartao tipoCartao){
+    public Cartao(TipoCartao tipoCartao) {
         this.status = true;
         this.tipoCartao = tipoCartao;
 
     }
 
-    public Cartao(){
+    public Cartao() {
         this.status = true;
         this.tipoCartao = TipoCartao.COMUM;
 

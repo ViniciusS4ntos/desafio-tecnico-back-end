@@ -14,14 +14,14 @@ public class CartaoController {
 
     private CartaoService cartaoService;
 
-    public CartaoController(CartaoService cartaoService){
+    public CartaoController(CartaoService cartaoService) {
         this.cartaoService = cartaoService;
     }
 
     @PostMapping()
     public ResponseEntity<Cartao> criarCartao(@RequestParam("id") Long id,
                                               // corrigir a escolha quando for criar o cartao
-                                              @RequestBody TipoCartao tipoCartao){
+                                              @RequestBody TipoCartao tipoCartao) {
 
         return ResponseEntity.ok(
                 cartaoService.criarCartao(id, tipoCartao)
@@ -29,7 +29,7 @@ public class CartaoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<Cartao>> consultarCartoes(@PathVariable Long id){
+    public ResponseEntity<List<Cartao>> consultarCartoes(@PathVariable Long id) {
         return ResponseEntity.ok(
                 cartaoService.visualizarCartoes(id)
         );

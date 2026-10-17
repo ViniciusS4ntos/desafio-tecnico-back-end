@@ -1,6 +1,6 @@
 package com.vinicius.crud_desafio.services;
 
-import com.vinicius.crud_desafio.controller.dtos.in.UserDTO;
+import com.vinicius.crud_desafio.controller.dtos.UserDTO;
 import com.vinicius.crud_desafio.infras.entitys.User;
 import com.vinicius.crud_desafio.infras.repository.UserRepository;
 import org.springframework.stereotype.Service;

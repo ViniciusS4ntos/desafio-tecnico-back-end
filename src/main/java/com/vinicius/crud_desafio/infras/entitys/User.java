@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "tb_user")
-@JsonPropertyOrder({ "id", "name", "email"})
+@JsonPropertyOrder({"id", "name", "email"})
 public class User {
 
     @Id
@@ -47,7 +47,7 @@ public class User {
         return email;
     }
 
-    public List<Cartao> getCartoes(){
+    public List<Cartao> getCartoes() {
         return cartoes;
     }
 
