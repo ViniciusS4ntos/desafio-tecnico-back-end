@@ -15,7 +15,7 @@ public class User {
     private Long id;
 
     @Column(length = 40, nullable = false)
-    private String name;
+    private String nome;
 
     @Column(length = 70, nullable = false, unique = true)
     private String email;
@@ -27,7 +27,7 @@ public class User {
     private List<Cartao> cartoes;
 
     public User(String name, String email, String password) {
-        this.name = name;
+        this.nome = name;
         this.email = email;
         this.password = password;
     }
@@ -39,12 +39,16 @@ public class User {
         return this.id;
     }
 
-    public String getName() {
-        return name;
+    public String getNome() {
+        return nome;
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public List<Cartao> getCartoes(){
+        return cartoes;
     }
 
     public String getPassword() {
@@ -52,8 +56,8 @@ public class User {
     }
 
     // Setters
-    public void setName(String name) {
-        this.name = name;
+    public void setNome(String name) {
+        this.nome = name;
     }
 
     public void setEmail(String email) {

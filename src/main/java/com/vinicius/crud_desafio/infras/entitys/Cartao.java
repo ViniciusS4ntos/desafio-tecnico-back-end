@@ -19,6 +19,7 @@ public class Cartao {
     private Boolean status;
 
     @Column(length = 20, nullable = false)
+    @Enumerated(EnumType.STRING)
     private TipoCartao tipoCartao;
 
 
@@ -26,13 +27,17 @@ public class Cartao {
     @JoinColumn(name = "user_id")
     private User usuario;
 
-    public Cartao(String nome, TipoCartao tipoCartao){
-        this.nome = nome;
+    public Cartao(TipoCartao tipoCartao){
         this.status = true;
         this.tipoCartao = tipoCartao;
+
     }
 
-    public Cartao(){}
+    public Cartao(){
+        this.status = true;
+        this.tipoCartao = TipoCartao.COMUM;
+
+    }
 
     public Long getNumeroCartao() {
         return numeroCartao;
@@ -65,4 +70,7 @@ public class Cartao {
         this.tipoCartao = tipoCartao;
     }
 
+    public void setUsuario(User usuario) {
+        this.usuario = usuario;
+    }
 }
