@@ -1,5 +1,6 @@
 package com.vinicius.crud_desafio.controller;
 
+import com.vinicius.crud_desafio.controller.dtos.in.UserDTO;
 import com.vinicius.crud_desafio.infras.entitys.User;
 import com.vinicius.crud_desafio.services.UserService;
 import org.springframework.http.ResponseEntity;
@@ -18,19 +19,19 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<User> adicionarUsuario(@RequestBody User user){
+    public ResponseEntity<UserDTO> adicionarUsuario(@RequestBody UserDTO user){
         return ResponseEntity.ok(userService.adicionarUsuario(user));
 
     }
 
     @GetMapping()
-    public ResponseEntity<List<User>> buscarTodos(){
+    public ResponseEntity<List<UserDTO>> buscarTodos(){
         return ResponseEntity.ok(userService.buscarTodos());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> atualizarUsuario(@PathVariable Long id,
-                                                 @RequestBody User  userAtualizado){
+    public ResponseEntity<UserDTO> atualizarUsuario(@PathVariable Long id,
+                                                 @RequestBody UserDTO userAtualizado){
         return ResponseEntity.ok(userService.atualizarUsuario(id, userAtualizado));
     }
 
@@ -39,5 +40,7 @@ public class UserController {
         userService.excluirUsuarioByEmail(email);
         return ResponseEntity.noContent().build();
     }
+
+
 
 }
