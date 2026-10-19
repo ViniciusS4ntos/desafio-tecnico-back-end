@@ -2,6 +2,8 @@ package com.vinicius.crud_desafio.services;
 
 import com.vinicius.crud_desafio.controller.dtos.UserDTO;
 import com.vinicius.crud_desafio.infras.entitys.User;
+import com.vinicius.crud_desafio.infras.exceptions.ExistingObjectException;
+import com.vinicius.crud_desafio.infras.exceptions.ObjectNotFoundException;
 import com.vinicius.crud_desafio.infras.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -35,10 +37,10 @@ public class UserService {
 
     public UserDTO atualizarUsuario(Long id, UserDTO user){
         User userBanco = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario nao encontrado! id : " + id));
+                .orElseThrow(() -> new ObjectNotFoundException("Usuario nao encontrado! id : " + id));
 
         if (userBanco.getEmail().equalsIgnoreCase(user.getEmail())){
-            throw new RuntimeException("A sua conta ja usar o email desejado!");
+            throw new ExistingObjectException("A sua conta ja usar o email desejado!");
         }
 
         emailExistente(user.getEmail());
@@ -51,7 +53,7 @@ public class UserService {
 
     public void excluirUsuarioByEmail(String email){
         User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new RuntimeException("Email nao encontrado! : " + email)
+                () -> new ObjectNotFoundException("Email nao encontrado! : " + email)
         );
 
         userRepository.delete(user);
@@ -60,7 +62,7 @@ public class UserService {
 
     private void emailExistente(String email){
         if (userRepository.existsByEmail(email)){
-            throw new RuntimeException("Email ja existente no banco! : "  + email);
+            throw new ExistingObjectException("Email ja existente no banco! : "  + email);
         }
     }
 

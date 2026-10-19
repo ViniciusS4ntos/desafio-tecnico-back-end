@@ -4,6 +4,8 @@ import com.vinicius.crud_desafio.controller.dtos.CartaoDTO;
 import com.vinicius.crud_desafio.infras.entitys.Cartao;
 import com.vinicius.crud_desafio.infras.entitys.User;
 import com.vinicius.crud_desafio.infras.enums.TipoCartao;
+import com.vinicius.crud_desafio.infras.exceptions.ExistingObjectException;
+import com.vinicius.crud_desafio.infras.exceptions.ObjectNotFoundException;
 import com.vinicius.crud_desafio.infras.repository.CartaoRepository;
 import com.vinicius.crud_desafio.infras.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -25,12 +27,12 @@ public class CartaoService {
     public CartaoDTO criarCartao(Long id, TipoCartao tipoCartao) {
 
         User user = userRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Usuario nao encontrado! id " + id)
+                () -> new ObjectNotFoundException("Usuario nao encontrado! id " + id)
         );
 
         for (Cartao cartao : user.getCartoes()) {
             if (cartao.getTipoCartao().equals(tipoCartao)) {
-                throw new IllegalArgumentException("Cartao ja existente com esse tipo: " + tipoCartao);
+                throw new ExistingObjectException("Cartao ja existente com esse tipo: " + tipoCartao);
             }
         }
 
@@ -45,7 +47,7 @@ public class CartaoService {
     public List<CartaoDTO> visualizarCartoes(Long id) {
 
         User user = userRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Usuario nao encontrado! id " + id)
+                () -> new ObjectNotFoundException("Usuario nao encontrado! id " + id)
         );
 
         return user.getCartoes().stream().map(
@@ -55,7 +57,7 @@ public class CartaoService {
 
     public CartaoDTO atualizarCartao(Long id, CartaoDTO cartaoAtualizado) {
         Cartao cartao = cartaoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cartao nao encontrado id:" + id));
+                .orElseThrow(() -> new ObjectNotFoundException("Cartao nao encontrado id:" + id));
 
         cartao.setTipoCartao(
                 cartaoAtualizado.getTipoCartao() != null ?
@@ -73,7 +75,7 @@ public class CartaoService {
     public CartaoDTO atualizarStatusCartao(Long id) {
 
         Cartao cartao = cartaoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cartao nao encontrado id:" + id));
+                .orElseThrow(() -> new ObjectNotFoundException("Cartao nao encontrado id:" + id));
 
         if (cartao.getStatus() == true) {
             cartao.setStatus(false);
@@ -86,7 +88,7 @@ public class CartaoService {
 
     public void deletarCartao(Long id) {
         Cartao cartao = cartaoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cartao nao encontrado id:" + id));
+                .orElseThrow(() -> new ObjectNotFoundException("Cartao nao encontrado id:" + id));
 
         cartaoRepository.delete(cartao);
     }
