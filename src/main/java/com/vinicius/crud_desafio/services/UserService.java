@@ -1,5 +1,6 @@
 package com.vinicius.crud_desafio.services;
 
+import com.vinicius.crud_desafio.controller.dtos.UserDTO;
 import com.vinicius.crud_desafio.infras.entitys.User;
 import com.vinicius.crud_desafio.infras.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -15,16 +16,24 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User adicionarUsuario(User usuario) {
+    public UserDTO adicionarUsuario(UserDTO usuario) {
         emailExistente(usuario.getEmail());
-        return userRepository.save(usuario);
+
+        return converteEntity(
+            userRepository.save(
+                    converteDTO(usuario)
+            )
+        );
+
+
     }
 
-    public List<User> buscarTodos(){
-        return userRepository.findAll();
+    public List<UserDTO> buscarTodos(){
+        List<User> list = userRepository.findAll();
+        return list.stream().map(l -> converteEntity(l)).toList();
     }
 
-    public User atualizarUsuario(Long id, User user){
+    public UserDTO atualizarUsuario(Long id, UserDTO user){
         User userBanco = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario nao encontrado! id : " + id));
 
@@ -34,9 +43,10 @@ public class UserService {
 
         emailExistente(user.getEmail());
 
-        return userRepository.save(
-                UsuarioAtualizar(userBanco, user)
-        );
+        return converteEntity(
+                userRepository.save(
+                        (UsuarioAtualizar(userBanco, converteDTO(user))
+        )));
     }
 
     public void excluirUsuarioByEmail(String email){
@@ -55,8 +65,8 @@ public class UserService {
     }
 
     private User UsuarioAtualizar(User userBanco, User userAtualizdo){
-        userBanco.setName(
-                userAtualizdo.getName() != null ? userAtualizdo.getName() : userBanco.getName()
+        userBanco.setNome(
+                userAtualizdo.getNome() != null ? userAtualizdo.getNome() : userBanco.getNome()
         );
 
         userBanco.setEmail(
@@ -68,6 +78,25 @@ public class UserService {
         );
 
         return userBanco;
+    }
+
+    // Nao usar modelMapper
+    private User converteDTO(UserDTO userDTO){
+
+        return new User(
+                userDTO.getName(),
+                userDTO.getEmail(),
+                userDTO.getPassword()
+        );
+    }
+
+    private UserDTO converteEntity(User user){
+
+        return new UserDTO(
+                user.getNome(),
+                user.getEmail(),
+                user.getPassword()
+        );
     }
 
 
