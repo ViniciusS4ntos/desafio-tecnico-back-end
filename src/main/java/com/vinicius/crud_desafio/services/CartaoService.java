@@ -1,5 +1,6 @@
 package com.vinicius.crud_desafio.services;
 
+import com.vinicius.crud_desafio.controller.dtos.CartaoDTO;
 import com.vinicius.crud_desafio.infras.entitys.Cartao;
 import com.vinicius.crud_desafio.infras.entitys.User;
 import com.vinicius.crud_desafio.infras.enums.TipoCartao;
@@ -21,7 +22,7 @@ public class CartaoService {
         this.userRepository = userRepository;
     }
 
-    public Cartao criarCartao(Long id, TipoCartao tipoCartao) {
+    public CartaoDTO criarCartao(Long id, TipoCartao tipoCartao) {
 
         User user = userRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Usuario nao encontrado! id " + id)
@@ -38,21 +39,22 @@ public class CartaoService {
         cartao.setNome("cartao " + user.getNome());
         cartao.setUsuario(user);
 
-
-        return cartaoRepository.save(cartao);
+        return converteDTO(cartaoRepository.save(cartao));
     }
 
-    public List<Cartao> visualizarCartoes(Long id) {
+    public List<CartaoDTO> visualizarCartoes(Long id) {
 
         User user = userRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Usuario nao encontrado! id " + id)
         );
 
-        return user.getCartoes();
+        return user.getCartoes().stream().map(
+                c -> converteDTO(c)
+        ).toList();
     }
 
-    public Cartao atualizarCartao(Long id, Cartao cartaoAtualizado){
-        Cartao  cartao = cartaoRepository.findById(id)
+    public CartaoDTO atualizarCartao(Long id, CartaoDTO cartaoAtualizado) {
+        Cartao cartao = cartaoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cartao nao encontrado id:" + id));
 
         cartao.setTipoCartao(
@@ -63,30 +65,47 @@ public class CartaoService {
         cartao.setNome(
                 cartaoAtualizado.getNome() != null ?
                         cartaoAtualizado.getNome() : cartao.getNome()
-                );
+        );
 
-        return cartaoRepository.save(cartao);
+        return converteDTO(cartaoRepository.save(cartao));
     }
 
-    public Cartao atualizarStatusCartao(Long id){
+    public CartaoDTO atualizarStatusCartao(Long id) {
 
-        Cartao  cartao = cartaoRepository.findById(id)
+        Cartao cartao = cartaoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cartao nao encontrado id:" + id));
 
-        if (cartao.getStatus() == true){
+        if (cartao.getStatus() == true) {
             cartao.setStatus(false);
-            return cartaoRepository.save(cartao);
+            return converteDTO(cartaoRepository.save(cartao));
         } else {
             cartao.setStatus(true);
-            return cartaoRepository.save(cartao);
+            return converteDTO(cartaoRepository.save(cartao));
         }
     }
 
-    public void deletarCartao(Long id){
-        Cartao  cartao = cartaoRepository.findById(id)
+    public void deletarCartao(Long id) {
+        Cartao cartao = cartaoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cartao nao encontrado id:" + id));
 
         cartaoRepository.delete(cartao);
     }
+
+    private Cartao converteEntity(CartaoDTO dto) {
+        Cartao entity = new Cartao();
+        entity.setNome(dto.getNome());
+        entity.setTipoCartao(dto.getTipoCartao());
+        entity.setStatus(dto.getStatus());
+        return entity;
+    }
+
+    private CartaoDTO converteDTO(Cartao cartao) {
+        CartaoDTO dto = new CartaoDTO();
+        dto.setNome(cartao.getNome());
+        dto.setTipoCartao(cartao.getTipoCartao());
+        dto.setStatus(cartao.getStatus());
+        return dto;
+    }
+
 
 }

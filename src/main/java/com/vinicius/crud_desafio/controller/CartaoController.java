@@ -1,5 +1,6 @@
 package com.vinicius.crud_desafio.controller;
 
+import com.vinicius.crud_desafio.controller.dtos.CartaoDTO;
 import com.vinicius.crud_desafio.infras.entitys.Cartao;
 import com.vinicius.crud_desafio.infras.enums.TipoCartao;
 import com.vinicius.crud_desafio.services.CartaoService;
@@ -19,9 +20,9 @@ public class CartaoController {
     }
 
     @PostMapping()
-    public ResponseEntity<Cartao> criarCartao(@RequestParam("id") Long id,
-                                              // corrigir a escolha quando for criar o cartao
-                                              @RequestBody TipoCartao tipoCartao) {
+    public ResponseEntity<CartaoDTO> criarCartao(@RequestParam("id") Long id,
+                                                 // corrigir a escolha quando for criar o cartao
+                                                 @RequestBody TipoCartao tipoCartao) {
 
         return ResponseEntity.ok(
                 cartaoService.criarCartao(id, tipoCartao)
@@ -29,22 +30,22 @@ public class CartaoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<Cartao>> consultarCartoes(@PathVariable Long id) {
+    public ResponseEntity<List<CartaoDTO>> consultarCartoes(@PathVariable Long id) {
         return ResponseEntity.ok(
                 cartaoService.visualizarCartoes(id)
         );
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cartao> atualizarCartao(@PathVariable  Long id,
-                                                  @RequestBody Cartao cartaoAtualizado){
+    public ResponseEntity<CartaoDTO> atualizarCartao(@PathVariable  Long id,
+                                                  @RequestBody CartaoDTO cartaoAtualizado){
         return ResponseEntity.ok(
                 cartaoService.atualizarCartao(id,cartaoAtualizado)
         );
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Cartao> desativarAtivarCartao(@PathVariable  Long id){
+    public ResponseEntity<CartaoDTO> desativarAtivarCartao(@PathVariable  Long id){
         return ResponseEntity.ok(
                 cartaoService.atualizarStatusCartao(id)
         );
