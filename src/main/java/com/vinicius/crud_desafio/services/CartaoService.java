@@ -51,4 +51,42 @@ public class CartaoService {
         return user.getCartoes();
     }
 
+    public Cartao atualizarCartao(Long id, Cartao cartaoAtualizado){
+        Cartao  cartao = cartaoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cartao nao encontrado id:" + id));
+
+        cartao.setTipoCartao(
+                cartaoAtualizado.getTipoCartao() != null ?
+                        cartaoAtualizado.getTipoCartao() : cartao.getTipoCartao()
+        );
+
+        cartao.setNome(
+                cartaoAtualizado.getNome() != null ?
+                        cartaoAtualizado.getNome() : cartao.getNome()
+                );
+
+        return cartaoRepository.save(cartao);
+    }
+
+    public Cartao atualizarStatusCartao(Long id){
+
+        Cartao  cartao = cartaoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cartao nao encontrado id:" + id));
+
+        if (cartao.getStatus() == true){
+            cartao.setStatus(false);
+            return cartaoRepository.save(cartao);
+        } else {
+            cartao.setStatus(true);
+            return cartaoRepository.save(cartao);
+        }
+    }
+
+    public void deletarCartao(Long id){
+        Cartao  cartao = cartaoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cartao nao encontrado id:" + id));
+
+        cartaoRepository.delete(cartao);
+    }
+
 }

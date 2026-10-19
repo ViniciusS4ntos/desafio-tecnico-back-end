@@ -35,4 +35,25 @@ public class CartaoController {
         );
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Cartao> atualizarCartao(@PathVariable  Long id,
+                                                  @RequestBody Cartao cartaoAtualizado){
+        return ResponseEntity.ok(
+                cartaoService.atualizarCartao(id,cartaoAtualizado)
+        );
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Cartao> desativarAtivarCartao(@PathVariable  Long id){
+        return ResponseEntity.ok(
+                cartaoService.atualizarStatusCartao(id)
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarCartao(@PathVariable Long id){
+        cartaoService.deletarCartao(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
