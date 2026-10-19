@@ -2,6 +2,7 @@ package com.vinicius.crud_desafio.infras.entitys;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
 
 import java.util.List;
 
@@ -23,7 +24,8 @@ public class User {
     @Column(length = 40, nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "usuario")
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Cartao> cartoes;
 
     public User(String name, String email, String password) {
