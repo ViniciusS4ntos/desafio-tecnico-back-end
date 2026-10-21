@@ -1,52 +1,57 @@
 package com.vinicius.crud_desafio.controller.dtos;
 
-import jakarta.persistence.Column;
-
 // entrada
 public class UserDTO {
 
-    @Column(length = 40, nullable = false)
-    private String name;
-
-    @Column(length = 70, nullable = false, unique = true)
+    private Long id;
+    private String nome;
     private String email;
-
-    @Column(length = 40, nullable = false)
-    private String password;
+    private String senha;
 
 
-    public UserDTO(String name, String email, String password) {
-        this.name = name;
+    public UserDTO(Long id, String nome, String email, String senha) {
+        this.id = id;
+        this.nome = nome;
         this.email = email;
-        this.password = password;
+        this.senha = senha;
     }
 
     public UserDTO() {
     }
 
-    public String getName() {
-        return name;
+    public Long getId() {
+        return id;
+    }
+
+    public String getNome() {
+        return nome;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getSenha() {
+        return senha;
     }
 
     // Setters
-    public void setName(String name) {
-        this.name = name;
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = this.nome;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
 }
