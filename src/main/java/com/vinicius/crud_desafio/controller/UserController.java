@@ -1,6 +1,7 @@
 package com.vinicius.crud_desafio.controller;
 
 import com.vinicius.crud_desafio.controller.dtos.UserDTO;
+import com.vinicius.crud_desafio.infras.entitys.UserCardSearch;
 import com.vinicius.crud_desafio.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,11 @@ public class UserController {
     @GetMapping()
     public ResponseEntity<List<UserDTO>> buscarTodos() {
         return ResponseEntity.ok(userService.buscarTodos());
+    }
+
+    @GetMapping("/card")
+    public ResponseEntity<List<UserCardSearch>> consultarUsersCard(){
+        return ResponseEntity.ok(userService.usuariosComCartoes());
     }
 
     @PutMapping("/{id}")

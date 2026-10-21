@@ -1,15 +1,20 @@
 package com.vinicius.crud_desafio.infras.entitys;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.vinicius.crud_desafio.infras.enums.UserRole;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Cascade;
+import org.jspecify.annotations.Nullable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "tb_user")
 @JsonPropertyOrder({"id", "name", "email"})
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,20 +26,27 @@ public class User {
     @Column(length = 70, nullable = false, unique = true)
     private String email;
 
-    @Column(length = 40, nullable = false)
-    private String password;
+    @Column(nullable = false)
+    private String senha;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<Cartao> cartoes;
 
-    public User(String name, String email, String password) {
+    public User(Long id, String name, String email, String senha) {
+        this.id = id;
         this.nome = name;
         this.email = email;
-        this.password = password;
+        this.senha = senha;
+        this.role = UserRole.USER;
     }
 
     public User() {
+        this.role = UserRole.USER;
     }
 
     public Long getId() {
@@ -53,8 +65,26 @@ public class User {
         return cartoes;
     }
 
-    public String getPassword() {
-        return password;
+    public UserRole getRole(){
+        return role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role  == UserRole.ADMIN){
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        } else  {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+    }
+
+    public String getPassword(){
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
     // Setters
@@ -67,7 +97,12 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.senha = password;
     }
+
+    public void setRole(UserRole role){
+        this.role = role;
+    }
+
 }
 
