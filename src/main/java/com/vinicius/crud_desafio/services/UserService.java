@@ -2,9 +2,12 @@ package com.vinicius.crud_desafio.services;
 
 import com.vinicius.crud_desafio.controller.dtos.UserDTO;
 import com.vinicius.crud_desafio.infras.entitys.User;
+import com.vinicius.crud_desafio.infras.entitys.UserCardSearch;
 import com.vinicius.crud_desafio.infras.exceptions.ExistingObjectException;
 import com.vinicius.crud_desafio.infras.exceptions.ObjectNotFoundException;
 import com.vinicius.crud_desafio.infras.repository.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +24,9 @@ public class UserService {
     public UserDTO adicionarUsuario(UserDTO usuario) {
         emailExistente(usuario.getEmail());
 
+        String encrypassword = new BCryptPasswordEncoder().encode(usuario.getSenha());
+        usuario.setSenha(encrypassword);
+
         return converteEntity(
             userRepository.save(
                     converteDTO(usuario)
@@ -33,6 +39,10 @@ public class UserService {
     public List<UserDTO> buscarTodos(){
         List<User> list = userRepository.findAll();
         return list.stream().map(l -> converteEntity(l)).toList();
+    }
+
+    public List<UserCardSearch> usuariosComCartoes(){
+        return userRepository.buscarUsuariosComCartoes();
     }
 
     public UserDTO atualizarUsuario(Long id, UserDTO user){
@@ -76,25 +86,29 @@ public class UserService {
         );
 
         userBanco.setPassword(
-                userAtualizdo.getPassword() != null ? userAtualizdo.getPassword() : userBanco.getPassword()
+                userAtualizdo.getPassword() != null ?
+                        new BCryptPasswordEncoder().encode(userAtualizdo.getPassword()) :
+                        new BCryptPasswordEncoder().encode(userBanco.getPassword())
         );
 
         return userBanco;
     }
 
     // Nao usar modelMapper
-    private User converteDTO(UserDTO userDTO){
+    public User converteDTO(UserDTO userDTO){
 
         return new User(
-                userDTO.getName(),
+                userDTO.getId(),
+                userDTO.getNome(),
                 userDTO.getEmail(),
-                userDTO.getPassword()
+                userDTO.getSenha()
         );
     }
 
-    private UserDTO converteEntity(User user){
+    public UserDTO converteEntity(User user){
 
         return new UserDTO(
+                user.getId(),
                 user.getNome(),
                 user.getEmail(),
                 user.getPassword()
