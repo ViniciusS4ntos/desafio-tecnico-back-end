@@ -21,7 +21,6 @@ public class CartaoController {
 
     @PostMapping()
     public ResponseEntity<CartaoDTO> criarCartao(@RequestParam("id") Long id,
-                                                 // corrigir a escolha quando for criar o cartao
                                                  @RequestBody TipoCartao tipoCartao) {
 
         return ResponseEntity.ok(
