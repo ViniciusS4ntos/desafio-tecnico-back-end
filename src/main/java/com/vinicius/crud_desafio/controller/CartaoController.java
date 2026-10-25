@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/card")
+@CrossOrigin(origins = "*")
 public class CartaoController {
 
     private CartaoService cartaoService;
@@ -21,10 +22,17 @@ public class CartaoController {
 
     @PostMapping()
     public ResponseEntity<CartaoDTO> criarCartao(@RequestParam("id") Long id,
-                                                 @RequestBody TipoCartao tipoCartao) {
+                                                 @RequestBody CartaoDTO CartaoDTO) {
 
         return ResponseEntity.ok(
-                cartaoService.criarCartao(id, tipoCartao)
+                cartaoService.criarCartao(id, CartaoDTO)
+        );
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<CartaoDTO>> consultarTodosCartoes(){
+        return ResponseEntity.ok(
+                cartaoService.listarTodosCartoes()
         );
     }
 
