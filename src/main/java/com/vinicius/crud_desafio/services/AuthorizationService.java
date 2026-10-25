@@ -4,6 +4,7 @@ import com.vinicius.crud_desafio.controller.dtos.AuthenticationDTO;
 import com.vinicius.crud_desafio.controller.dtos.RegisterDTO;
 import com.vinicius.crud_desafio.controller.dtos.UserDTO;
 import com.vinicius.crud_desafio.infras.entitys.User;
+import com.vinicius.crud_desafio.infras.enums.UserRole;
 import com.vinicius.crud_desafio.infras.exceptions.ExistingObjectException;
 import com.vinicius.crud_desafio.infras.exceptions.ObjectNotFoundException;
 import com.vinicius.crud_desafio.infras.repository.UserRepository;
@@ -63,21 +64,11 @@ public class AuthorizationService implements UserDetailsService {
         userNew.setNome(dto.getNome());
         userNew.setEmail(dto.getEmail());
         userNew.setPassword(encrypassword);
-        userNew.setRole(dto.getUserRole());
+        userNew.setRole(UserRole.ADMIN);
 
         return userService.converteEntity(
                 userRepository.save(userNew)
         );
-
-    }
-
-    private User conveterRegisterDTO(RegisterDTO dto){
-        User user = new User();
-        user.setNome(dto.getNome());
-        user.setEmail(dto.getEmail());
-        user.setPassword(dto.getSenha());
-        user.setRole(dto.getUserRole());
-        return user;
 
     }
 

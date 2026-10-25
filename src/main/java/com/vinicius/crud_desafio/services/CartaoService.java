@@ -24,21 +24,21 @@ public class CartaoService {
         this.userRepository = userRepository;
     }
 
-    public CartaoDTO criarCartao(Long id, TipoCartao tipoCartao) {
+    public CartaoDTO criarCartao(Long id, CartaoDTO cartaoDTO) {
 
         User user = userRepository.findById(id).orElseThrow(
                 () -> new ObjectNotFoundException("Usuario nao encontrado! id " + id)
         );
 
         for (Cartao cartao : user.getCartoes()) {
-            if (cartao.getTipoCartao().equals(tipoCartao)) {
-                throw new ExistingObjectException("Cartao ja existente com esse tipo: " + tipoCartao);
+            if (cartao.getTipoCartao().equals(cartaoDTO.getTipoCartao())) {
+                throw new ExistingObjectException("Cartao ja existente com esse tipo: " + cartaoDTO.getTipoCartao());
             }
         }
 
         Cartao cartao = new Cartao();
-        cartao.setTipoCartao(tipoCartao);
-        cartao.setNome("cartao " + user.getNome());
+        cartao.setTipoCartao(cartaoDTO.getTipoCartao());
+        cartao.setNome("VEM " + cartaoDTO.getNome());
         cartao.setUsuario(user);
 
         return converteDTO(cartaoRepository.save(cartao));
@@ -51,6 +51,13 @@ public class CartaoService {
         );
 
         return user.getCartoes().stream().map(
+                c -> converteDTO(c)
+        ).toList();
+    }
+
+    public List<CartaoDTO> listarTodosCartoes(){
+        List<Cartao> cartoes = cartaoRepository.findAll();
+        return cartoes.stream().map(
                 c -> converteDTO(c)
         ).toList();
     }
@@ -103,6 +110,7 @@ public class CartaoService {
 
     private CartaoDTO converteDTO(Cartao cartao) {
         CartaoDTO dto = new CartaoDTO();
+        dto.setNumeroCartao(cartao.getNumeroCartao());
         dto.setNome(cartao.getNome());
         dto.setTipoCartao(cartao.getTipoCartao());
         dto.setStatus(cartao.getStatus());
