@@ -5,12 +5,13 @@ import com.vinicius.crud_desafio.infras.enums.TipoCartao;
 
 public class CartaoDTO {
 
+    private Long numeroCartao;
+
     private String nome;
 
     private Boolean status;
 
     private TipoCartao tipoCartao;
-
 
     public CartaoDTO() {
         this.status = true;
@@ -18,11 +19,14 @@ public class CartaoDTO {
 
     }
 
+    public Long getNumeroCartao() {
+        return numeroCartao;
+    }
+
     public String getNome() {
         return nome;
     }
 
-    @JsonIgnore
     public Boolean getStatus() {
         return status;
     }
@@ -33,6 +37,9 @@ public class CartaoDTO {
 
     // Setters
 
+    public void setNumeroCartao(Long numeroCartao) {
+        this.numeroCartao = numeroCartao;
+    }
 
     public void setNome(String nome) {
         this.nome = nome;
