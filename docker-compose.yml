@@ -1,13 +1,14 @@
 version: '3.8'
 
 services:
-  api:
+  crud-backend:
     build: .
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=h2
-      - API_SECRET_KEY=${API_SECRET_KEY}
+      # aqui troca se for rodar com docker
+      - SPRING_PROFILES_ACTIVE=prod
+      - API_SECRET_KEY="chaveGrandeEnormeGigante123"
     depends_on:
       - db
 
