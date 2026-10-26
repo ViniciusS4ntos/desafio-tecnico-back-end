@@ -62,24 +62,54 @@ environment:
 
 
 
-## Como Rodar Localmente (Sem Docker)
+## Como Executar a Aplicação Localmente
 
-### 1. Clonar e Acessar o Repositório
+### 1. Clonar o Repositório
 
-```bash
-git clone https://github.com/ViniciusS4ntos/desafio-tecnico-back-end.git
-cd desafio-tecnico-back-end
-```
+    git clone https://github.com/ViniciusS4ntos/desafio-tecnico-back-end.git
+    cd desafio-tecnico-back-end
 
 ### 2. Executar a Aplicação
 
-Configure o perfil do banco de dados desejado na seção **Seleção de Banco de Dados (H2 vs. PostgreSQL)** e execute:
+Você pode executar o projeto utilizando o Maven Wrapper (recomendado, pois dispensa a instalação global do Maven) ou uma instalação local do Maven.
 
-```bash
-mvn spring-boot:run
-```
+#### Opção A: Maven Wrapper (Recomendado)
 
----
+Windows (PowerShell ou CMD):
+
+    .\mvnw clean package
+    java -jar target/crud-desafio-0.0.1-SNAPSHOT.jar
+
+Linux / macOS:
+
+    chmod +x mvnw
+    ./mvnw clean package
+    java -jar target/crud-desafio-0.0.1-SNAPSHOT.jar
+
+Observação: O comando chmod +x mvnw só precisa ser executado caso o arquivo não tenha permissão de execução.
+
+#### Opção B: Maven Global
+
+Caso você já tenha o Apache Maven instalado e configurado nas variáveis de ambiente, execute:
+
+    mvn clean package
+    java -jar target/crud-desafio-0.0.1-SNAPSHOT.jar
+
+### 3. Executar em Modo de Desenvolvimento
+
+Se quiser iniciar a aplicação sem gerar o arquivo JAR manualmente, utilize o comando correspondente ao seu ambiente.
+
+Windows (PowerShell ou CMD):
+
+    .\mvnw spring-boot:run
+
+Linux / macOS:
+
+    ./mvnw spring-boot:run
+
+Maven Global:
+
+    mvn spring-boot:run
 
 ## Como Rodar com Docker
 
