@@ -21,11 +21,11 @@ public class CartaoController {
     }
 
     @PostMapping()
-    public ResponseEntity<CartaoDTO> criarCartao(@RequestParam("id") Long id,
+    public ResponseEntity<CartaoDTO> criarCartao(@RequestParam("email") String email,
                                                  @RequestBody CartaoDTO CartaoDTO) {
 
         return ResponseEntity.ok(
-                cartaoService.criarCartao(id, CartaoDTO)
+                cartaoService.criarCartao(email, CartaoDTO)
         );
     }
 
