@@ -24,10 +24,10 @@ public class CartaoService {
         this.userRepository = userRepository;
     }
 
-    public CartaoDTO criarCartao(Long id, CartaoDTO cartaoDTO) {
+    public CartaoDTO criarCartao(String email, CartaoDTO cartaoDTO) {
 
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new ObjectNotFoundException("Usuario nao encontrado! id " + id)
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new ObjectNotFoundException("Usuario nao encontrado! id " + email)
         );
 
         for (Cartao cartao : user.getCartoes()) {

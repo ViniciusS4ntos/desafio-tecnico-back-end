@@ -38,6 +38,15 @@ public class SecurityConfigurations {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/user").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/user").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/user").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.POST, "/card").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/card").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/card").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/card").hasRole("ADMIN")
+
+
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
